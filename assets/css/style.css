@@ -1,4 +1,3 @@
-
 body {
   font-family:'Courier New', Courier, monospace;
   color: #fff;
@@ -17,7 +16,6 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Courier New', Courier, monospace;
 }
-
 
 .back-to-top {
   position: fixed;
@@ -115,7 +113,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-
 .nav-menu {
   padding-top: 30px;
 }
@@ -187,11 +184,10 @@ h1, h2, h3, h4, h5, h6 {
   color: #FF1493;
 }
 
-
 #hero {
   width: 100%;
   height: 100vh;
-  background: url("../img/hero-bag.jpg") top center;
+  background: url("../img/banner.jpg") top center;
   background-size: cover;
 }
 
@@ -289,7 +285,6 @@ section {
   margin-bottom: 0;
 }
 
-
 .about .content h3 {
   padding-bottom: 20px;
   font-weight: 700;
@@ -316,13 +311,10 @@ section {
   margin-bottom: 0;
 }
 
-
-
 .skills .progress {
   height: 50px;
   display: block;
   background: none;
-
 }
 
 .skills .progress .skill {
@@ -350,7 +342,6 @@ section {
   transition: .9s;
   background-color: #FF1493;
 }
-
 
 .services .icon-box {
   margin-bottom: 20px;
@@ -409,7 +400,6 @@ section {
   }
 }
 
-
 @-webkit-keyframes animate-loading {
   0% {
     transform: rotate(0deg);
@@ -427,8 +417,6 @@ section {
     transform: rotate(360deg);
   }
 }
-
-
 
 #footer {
   padding: 15px;
