@@ -59,8 +59,8 @@ h3 { margin: 15px 0 8px; font-size: 1.35rem; letter-spacing: -.035em; line-heigh
 .credentials { display: flex; flex-wrap: wrap; gap: 7px 11px; padding: 0; margin: 35px 0 0; list-style: none; font: .73rem/1.7 var(--mono); }
 .credentials span { color: var(--purple); }
 .hero-art { position: relative; display: grid; min-height: 470px; place-items: center; }
-.avatar-frame { position: relative; display: grid; width: min(100%, 430px); aspect-ratio: 1; place-items: end center; border: 2px solid var(--ink); border-radius: 49% 51% 46% 54% / 43% 45% 55% 57%; background: var(--pink); box-shadow: 10px 10px 0 var(--yellow); overflow: hidden; transform: rotate(2deg); }
-.avatar-frame img { width: 100%; max-width: none; height: 100%; object-fit: contain; }
+.avatar-frame { position: relative; display: grid; width: min(100%, 430px); aspect-ratio: 1; place-items: end center; border: 2px solid var(--ink); border-radius: 20% 20% 22% 22% / 18% 18% 22% 22%; background: var(--paper); box-shadow: 10px 10px 0 var(--yellow); overflow: hidden; transform: rotate(2deg); }
+.avatar-frame img { width: 100%; max-width: none; height: 100%; object-fit: contain; object-position: center; }
 .scribble { position: absolute; top: 30px; left: -4px; z-index: 2; margin: 0; font: italic 1rem/1.15 var(--serif); transform: rotate(-8deg); }
 .idea-bubble { position: absolute; z-index: 2; top: 48px; right: -4px; margin: 0; padding: 21px 16px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--blue); font: .75rem/1.25 var(--mono); text-align: center; transform: rotate(8deg); }
 .hero-arrow { position: absolute; bottom: 30px; left: 0; width: 100px; fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
@@ -193,7 +193,7 @@ h3 { margin: 15px 0 8px; font-size: 1.35rem; letter-spacing: -.035em; line-heigh
 .about { background: #f8e7db; }
 .about-layout { align-items: center; }
 .about-avatar { position: relative; display: grid; min-height: 380px; place-items: center; }
-.about-avatar img { width: min(100%, 360px); height: auto; filter: contrast(1.04); transform: rotate(-2deg); }
+.about-avatar img { width: min(100%, 360px); height: auto; object-fit: contain; object-position: center; filter: contrast(1.04); transform: rotate(-2deg); }
 .about-avatar p { position: absolute; right: 0; bottom: 12px; margin: 0; padding: 20px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--yellow); font: .73rem/1.15 var(--mono); text-align: center; transform: rotate(9deg); }
 
 .faq { background: var(--paper); }
