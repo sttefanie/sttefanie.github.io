@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sttefanie.github.io/sitemap.xml

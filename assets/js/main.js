@@ -1,186 +1,89 @@
+(() => {
+  document.body.classList.remove('no-js');
+  document.body.classList.add('js');
+  const menuButton = document.querySelector('[data-menu-button]');
+  const menu = document.querySelector('[data-menu]');
 
-!(function($) {
-  "use strict";
+  const closeMenu = () => {
+    if (!menu || !menuButton) return;
+    menu.classList.remove('is-open');
+    menuButton.setAttribute('aria-expanded', 'false');
+  };
 
-  // Hero typed
-  if ($('.typed').length) {
-    var typed_strings = $(".typed").data('typed-items');
-    typed_strings = typed_strings.split(',')
-    new Typed('.typed', {
-      strings: typed_strings,
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 2000
-    });
-  }
+  menuButton?.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('is-open');
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+  });
 
-  $(document).on('click', '.nav-menu a, .scrollto', function(e) {
-    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-      e.preventDefault();
-      var target = $(this.hash);
-      if (target.length) {
-
-        var scrollto = target.offset().top;
-
-        $('html, body').animate({
-          scrollTop: scrollto
-        }, 1500, 'easeInOutExpo');
-
-        if ($(this).parents('.nav-menu, .mobile-nav').length) {
-          $('.nav-menu .active, .mobile-nav .active').removeClass('active');
-          $(this).closest('li').addClass('active');
-        }
-
-        if ($('body').hasClass('mobile-nav-active')) {
-          $('body').removeClass('mobile-nav-active');
-          $('.mobile-nav-toggle i').toggleClass('icofont-navigation-menu icofont-close');
-        }
-        return false;
-      }
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu?.classList.contains('is-open')) {
+      closeMenu();
+      menuButton?.focus();
     }
   });
 
-  $(document).ready(function() {
-    if (window.location.hash) {
-      var initial_nav = window.location.hash;
-      if ($(initial_nav).length) {
-        var scrollto = $(initial_nav).offset().top;
-        $('html, body').animate({
-          scrollTop: scrollto
-        }, 1500, 'easeInOutExpo');
+  const year = document.querySelector('[data-year]');
+  if (year) year.textContent = new Date().getFullYear();
+
+  const form = document.querySelector('[data-contact-form]');
+  const status = document.querySelector('[data-form-status]');
+  const contactPattern = /(^[^\s@]+@[^\s@]+\.[^\s@]+$)|(^\+?[0-9\s().-]{10,}$)/;
+
+  const setFieldError = (field, message = '') => {
+    const error = document.getElementById(`erro-${field.id}`);
+    field.setAttribute('aria-invalid', message ? 'true' : 'false');
+    if (error) error.textContent = message;
+  };
+
+  const validateField = (field) => {
+    const value = field.value.trim();
+    if (!value) return 'Preencha este campo para continuar.';
+    if (field.id === 'canal' && !contactPattern.test(value)) return 'Informe um e-mail válido ou um número de WhatsApp válido.';
+    return '';
+  };
+
+  form?.querySelectorAll('input, textarea, select').forEach((field) => {
+    field.addEventListener('input', () => setFieldError(field, ''));
+    field.addEventListener('change', () => setFieldError(field, ''));
+  });
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const fields = [...form.querySelectorAll('input, textarea, select')];
+    const invalidField = fields.find((field) => {
+      const message = validateField(field);
+      setFieldError(field, message);
+      return Boolean(message);
+    });
+
+    if (invalidField) {
+      if (status) {
+        status.textContent = 'Revise os campos indicados antes de enviar.';
+        status.classList.add('is-error');
+        status.focus();
       }
+      invalidField.focus();
+      return;
     }
-  });
 
-  $(document).on('click', '.mobile-nav-toggle', function(e) {
-    $('body').toggleClass('mobile-nav-active');
-    $('.mobile-nav-toggle i').toggleClass('icofont-navigation-menu icofont-close');
-  });
-
-  $(document).click(function(e) {
-    var container = $(".mobile-nav-toggle");
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-      if ($('body').hasClass('mobile-nav-active')) {
-        $('body').removeClass('mobile-nav-active');
-        $('.mobile-nav-toggle i').toggleClass('icofont-navigation-menu icofont-close');
-      }
+    if (status) {
+      status.textContent = 'Tudo certo. Seu aplicativo de e-mail será aberto para enviar a mensagem.';
+      status.classList.remove('is-error');
     }
+
+    const data = new FormData(form);
+    const body = [
+      `Nome: ${data.get('nome')}`,
+      `E-mail ou WhatsApp: ${data.get('canal')}`,
+      `Perfil: ${data.get('perfil')}`,
+      '',
+      'Contexto:', data.get('contexto'),
+      '',
+      'Principal desafio:', data.get('desafio'),
+      '',
+      `Preferência de contato: ${data.get('preferencia')}`
+    ].join('\n');
+    window.location.href = `mailto:macielsttefanie@gmail.com?subject=${encodeURIComponent('Solicitação de diagnóstico pelo site')}&body=${encodeURIComponent(body)}`;
   });
-
-  // Navigation active state on scroll
-  var nav_sections = $('section');
-  var main_nav = $('.nav-menu, .mobile-nav');
-
-  $(window).on('scroll', function() {
-    var cur_pos = $(this).scrollTop() + 200;
-
-    nav_sections.each(function() {
-      var top = $(this).offset().top,
-        bottom = top + $(this).outerHeight();
-
-      if (cur_pos >= top && cur_pos <= bottom) {
-        if (cur_pos <= bottom) {
-          main_nav.find('li').removeClass('active');
-        }
-        main_nav.find('a[href="#' + $(this).attr('id') + '"]').parent('li').addClass('active');
-      }
-      if (cur_pos < 300) {
-        $(".nav-menu ul:first li:first").addClass('active');
-      }
-    });
-  });
-
-  // Back to top button
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > 100) {
-      $('.back-to-top').fadeIn('slow');
-    } else {
-      $('.back-to-top').fadeOut('slow');
-    }
-  });
-
-  $('.back-to-top').click(function() {
-    $('html, body').animate({
-      scrollTop: 0
-    }, 1500, 'easeInOutExpo');
-    return false;
-  });
-
-  // jQuery counterUp
-  $('[data-toggle="counter-up"]').counterUp({
-    delay: 10,
-    time: 1000
-  });
-
-  // Skills section
-  $('.skills-content').waypoint(function() {
-    $('.progress .progress-bar').each(function() {
-      $(this).css("width", $(this).attr("aria-valuenow") + '%');
-    });
-  }, {
-    offset: '80%'
-  });
-
-  // Porfolio isotope and filter
-  $(window).on('load', function() {
-    var portfolioIsotope = $('.portfolio-container').isotope({
-      itemSelector: '.portfolio-item',
-      layoutMode: 'fitRows'
-    });
-
-    $('#portfolio-flters li').on('click', function() {
-      $("#portfolio-flters li").removeClass('filter-active');
-      $(this).addClass('filter-active');
-
-      portfolioIsotope.isotope({
-        filter: $(this).data('filter')
-      });
-      aos_init();
-    });
-
-    // Initiate venobox (lightbox feature used in portofilo)
-    $(document).ready(function() {
-      $('.venobox').venobox();
-    });
-  });
-
-  // Testimonials carousel (uses the Owl Carousel library)
-  $(".testimonials-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    responsive: {
-      0: {
-        items: 1
-      },
-      768: {
-        items: 2
-      },
-      900: {
-        items: 3
-      }
-    }
-  });
-
-  // Portfolio details carousel
-  $(".portfolio-details-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    items: 1
-  });
-
-  // Init AOS
-  function aos_init() {
-    AOS.init({
-      duration: 1000,
-      easing: "ease-in-out-back",
-      once: true
-    });
-  }
-  $(window).on('load', function() {
-    aos_init();
-  });
-
-})(jQuery);
+})();
